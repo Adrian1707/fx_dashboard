@@ -1,6 +1,6 @@
 import * as React from 'react';
 const { useState } = React;
-import { LineChart, Line } from 'recharts';
+import Chart from "./Chart";
 
 export function FxRate(data) {
   const formatCurrencyPair = () => {
@@ -8,28 +8,25 @@ export function FxRate(data) {
   }
 
   const collectRates = () => {
-    return data.data.quotes.map((rate) => rate.close)
+    return data.data.quotes.map((rate, idx) => ({ close: rate.close, day: idx }))
   }
 
   const [currencyPair, setCurrencyPair] = useState(formatCurrencyPair)
   const [rates, setRates] = useState(collectRates)
 
   return(
-    <div className='zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat shadow-lg dark:shadow-black/20 bg-[50%]'>
-      <img src="https://www.tradingwithrayner.com/wp-content/uploads/2018/10/12.png"
-      className="transition duration-300 ease-linear"/>
-      <a href="#!">
-         <div
-           className="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed bg-[hsla(0,0%,0%,0.3)]">
-           <div className="flex h-full items-end justify-start">
-             <h5 className="m-6 text-lg font-bold text-white">
-               {currencyPair}
-             </h5>
-           </div>
+    <div className='zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat'>
+    <Chart data={rates} />
+       <div
+         className="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed">
+         <div className="flex h-full items-end justify-start">
+           <h5 className="m-6 text-lg font-bold text-white">
+             {currencyPair}
+           </h5>
          </div>
-         <div>
-         </div>
-       </a>
+       </div>
+       <div>
+       </div>
     </div>
   )
 }
