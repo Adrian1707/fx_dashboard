@@ -17,7 +17,7 @@ export default function Chart({ data }) {
       return { min: null, max: null };
     }
 
-    const closeValues = data.map(item => item.close);
+    const closeValues = data.map(item => item.rate);
     const min = parseFloat((Math.min(...closeValues) * 0.99).toFixed(2))
     const max = parseFloat((Math.max(...closeValues) * 1.01).toFixed(2))
     return [min, max]
@@ -41,7 +41,7 @@ export default function Chart({ data }) {
           <YAxis domain={setAxisRange} />
           <Tooltip />
           <Legend />
-          <Line dataKey="close" fill="#82ca9d"/>
+          <Line dataKey="rate" fill="#82ca9d"/>
         </LineChart>
       </ResponsiveContainer>
     </div>

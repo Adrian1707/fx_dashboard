@@ -8,7 +8,7 @@ export function FxRate(data) {
   }
 
   const collectRates = () => {
-    return data.data.quotes.map((rate, idx) => ({ close: rate.close, day: idx, name: formatCurrencyPair() }))
+    return data.data.quotes.map((rate, idx) => ({ rate: rate.close, day: idx, name: formatCurrencyPair() }))
   }
 
   const [currencyPair, setCurrencyPair] = useState(formatCurrencyPair)
