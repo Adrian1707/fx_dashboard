@@ -17,6 +17,13 @@ export function FxRate(data) {
   return(
     <div className='zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat'>
       <Chart data={rates} />
+      <div className="ml-14 pl-14 w-80 h-6 space-x-12">
+        <span>1d</span>
+        <span>5d</span>
+        <span>1m</span>
+        <span>1y</span>
+        <span>5y</span>
+      </div>
     </div>
   )
 }
