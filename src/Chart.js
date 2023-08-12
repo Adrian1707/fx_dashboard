@@ -12,6 +12,17 @@ import {
 
 
 export default function Chart({ data }) {
+  const setAxisRange = () => {
+    if (!Array.isArray(data) || data.length === 0) {
+      return { min: null, max: null };
+    }
+
+    const closeValues = data.map(item => item.close);
+    const min = parseFloat((Math.min(...closeValues) * 0.99).toFixed(2))
+    const max = parseFloat((Math.max(...closeValues) * 1.01).toFixed(2))
+    return [min, max]
+  }
+
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart
@@ -25,7 +36,7 @@ export default function Chart({ data }) {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="day" />
-        <YAxis domain={[42, 47]} />
+        <YAxis domain={setAxisRange} />
         <Tooltip />
         <Legend />
         <Line dataKey="close" fill="#82ca9d" />
