@@ -24,23 +24,26 @@ export default function Chart({ data }) {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <LineChart
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="day" />
-        <YAxis domain={setAxisRange} />
-        <Tooltip />
-        <Legend />
-        <Line dataKey="close" fill="#82ca9d" />
-      </LineChart>
-    </ResponsiveContainer>
+    <div>
+      <h1 className="text-xl font-bold text-center text-green-600">{data[0].name}</h1>
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="4 4" />
+          <XAxis dataKey="day" />
+          <YAxis domain={setAxisRange} />
+          <Tooltip />
+          <Legend />
+          <Line dataKey="close" fill="#82ca9d"/>
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
