@@ -20,7 +20,7 @@ export default function Chart({ data }) {
     const closeValues = data.map(item => item.rate);
     const min = parseFloat((Math.min(...closeValues) * 0.99).toFixed(2))
     const max = parseFloat((Math.max(...closeValues) * 1.01).toFixed(2))
-    return [min, max]
+    return [Math.round(min), Math.round(max)]
   }
 
   return (
@@ -36,12 +36,11 @@ export default function Chart({ data }) {
             bottom: 5,
           }}
         >
-          <CartesianGrid strokeDasharray="4 4" />
           <XAxis dataKey="day" />
           <YAxis domain={setAxisRange} />
           <Tooltip />
           <Legend />
-          <Line dataKey="rate" fill="#82ca9d"/>
+          <Line type="monotone" stroke="blue" dataKey="rate" dot={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>
