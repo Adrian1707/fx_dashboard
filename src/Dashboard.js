@@ -11,7 +11,7 @@ export function Dashboard() {
 
   useEffect(() => {
     const fetchDataAndProcess = async () => {
-      const data = await fetchData("GBPTHB", "2023-07-01");
+      const data = await fetchData("GBPTHB", "2023-14-08");
       if (data) {
         setExchangeData(data);
       }
@@ -25,9 +25,9 @@ export function Dashboard() {
     { exchangeData &&
       (
         <div className="grid gap-6 lg:grid-cols-3">
-          <FxRate data={exchangeData} />
-          <FxRate data={exchangeData} />
-          <FxRate data={exchangeData} />
+          <FxRate fxRatesData={exchangeData} />
+          <FxRate fxRatesData={exchangeData} />
+          <FxRate fxRatesData={exchangeData} />
         </div>
       )
     }

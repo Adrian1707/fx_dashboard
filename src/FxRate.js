@@ -1,35 +1,45 @@
 import * as React from 'react';
-const { useState } = React;
+const { useState, useEffect } = React;
 import Chart from "./Chart";
 import { fetchData } from "./FxData"
 import dayjs from 'dayjs';
 
-export function FxRate(data) {
+export function FxRate({fxRatesData}) {
+  const [fxData, setFxData] = useState(fxRatesData)
+
+  useEffect(() => {
+    const ratesStuff = collectRates(fxData)
+    setRates(ratesStuff);
+  }, [])
+
   const formatCurrencyPair = () => {
-    return `${data.data.base_currency}/${data.data.quote_currency}`
+    return `${fxData.base_currency}/${fxData.quote_currency}`
   }
 
-  const timeChange = (num, timeType) => {
+  const timeChange = async (num, timeType, foo) => {
     const startTime = dayjs().subtract(num, timeType).toDate().toISOString().split('T')[0]
-    fetchData(formatCurrencyPair().replace("/", ""), startTime)
-    console.log(startTime)
+    const newData = await fetchData(formatCurrencyPair().replace("/", ""), startTime, foo)
+    setFxData(newData)
+    const updatedRates = collectRates(newData);
+    setRates(updatedRates)
   }
 
-  const collectRates = () => {
-    return data.data.quotes.map((rate, idx) => ({ rate: rate.close, day: idx, name: formatCurrencyPair() }))
+
+  const collectRates = (data) => {
+    return data.quotes.map((rate, idx) => ({ rate: rate.close, day: idx, name: formatCurrencyPair() }))
   }
 
   const [currencyPair, setCurrencyPair] = useState(formatCurrencyPair)
-  const [rates, setRates] = useState(collectRates)
+  const [rates, setRates] = useState([])
 
   return(
     <div className='zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat'>
-      <Chart data={rates} />
+      {rates.length > 0 && <Chart data={rates} /> }
       <div className="ml-14 pl-14 w-80 h-6 space-x-12">
         <span className="cursor-pointer" onClick={() => timeChange(1, 'day')}>1d</span>
-        <span className="cursor-pointer" onClick={() => timeChange(5, 'day')}>5d</span>
-        <span className="cursor-pointer" onClick={() => timeChange(1, 'month')}>1m</span>
-        <span className="cursor-pointer" onClick={() => timeChange(1, 'year')}>1y</span>
+        <span className="cursor-pointer" onClick={() => timeChange(5, 'day', "week")}>5d</span>
+        <span className="cursor-pointer" onClick={() => timeChange(1, 'month', "month")}>1m</span>
+        <span className="cursor-pointer" onClick={() => timeChange(1, 'year', "year")}>1y</span>
         <span className="cursor-pointer" onClick={() => timeChange(5, 'year')}>5y</span>
       </div>
     </div>
