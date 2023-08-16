@@ -20,7 +20,11 @@ export default function Chart({ data }) {
     const closeValues = data.map(item => item.rate);
     const min = parseFloat((Math.min(...closeValues) * 0.99).toFixed(2))
     const max = parseFloat((Math.max(...closeValues) * 1.01).toFixed(2))
-    return [Math.round(min), Math.round(max)]
+    if(min < 10) {
+      return [min, max]
+    } else {
+      return [Math.round(min), Math.round(max)]
+    }
   }
 
   return (

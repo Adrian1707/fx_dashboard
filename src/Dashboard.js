@@ -8,11 +8,12 @@ dotenv.config();
 
 
 export function Dashboard() {
-  const [exchangeData, setExchangeData] = useState(null);
+  const [exchangeData, setExchangeData] = useState([]);
   const [searchedRate, setSearchedRate] = useState('')
+   // const [fxRatesData, setFxRatesData] = useState([]);
 
   useEffect(() => {
-    fetchFxData("THB")
+    fetchFxData("USD")
 }, []);
 
   const fetchFxData = (rate) => {
@@ -20,7 +21,7 @@ export function Dashboard() {
       const startTime = dayjs().subtract('1', "month").toDate().toISOString().split('T')[0]
       const data = await fetchData(`GBP${rate}`, startTime, undefined);
       if (data) {
-        setExchangeData(data);
+        setExchangeData([...exchangeData, data]);
       }
     };
 
@@ -51,9 +52,11 @@ export function Dashboard() {
               </div>
           </form>
           <div className="grid gap-6 lg:grid-cols-3">
-            <FxRate fxRatesData={exchangeData} />
-            <FxRate fxRatesData={exchangeData} />
-            <FxRate fxRatesData={exchangeData} />
+          {exchangeData && exchangeData.map((data, index) => (
+            <FxRate key={index} fxRatesData={data} />
+            )
+            )
+          }
           </div>
         </div>
       )
