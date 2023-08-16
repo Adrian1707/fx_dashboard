@@ -17,18 +17,20 @@ export const fetchData = async (currencyPair, startDate, foo) => {
       data = monthData
     } else if (foo == "week") {
       data = weekData
+    } else if (foo == "undefined"){
+      data = weekData
     }
-    // const endDate = dayjs().toDate().toISOString().split('T')[0]
-    // const response = await fetch(
-    //   `${TIME_SERIES_URL}?currency=${currencyPair}&api_key=${FX_API_KEY}&start_date=${startDate}&end_date=${endDate}&format=records`
-    // );
+    const endDate = dayjs().toDate().toISOString().split('T')[0]
+    const url = `${TIME_SERIES_URL}?currency=${currencyPair}&api_key=${FX_API_KEY}&start_date=${startDate}&end_date=${endDate}&format=records`
+    console.log(url)
+    // const response = await fetch(url);
     //
     // if (!response.ok) {
     //   throw new Error('Network response was not ok');
     // }
     //
     // const data = await response.json(); // Parse the response
-
+    console.log(data)
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);
