@@ -1,6 +1,7 @@
 import * as React from 'react';
 const { useState, useEffect } = React;
 import Chart from "./Chart";
+import { Loader } from "./Loader";
 import { fetchData } from "./FxData"
 import dayjs from 'dayjs';
 
