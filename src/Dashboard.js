@@ -11,11 +11,11 @@ dotenv.config();
 export function Dashboard() {
   const [exchangeData, setExchangeData] = useState([]);
   const [searchedRate, setSearchedRate] = useState('')
-  const [ratesCount, setRatesCount] = useState(0)
+  const [ratesLoadingCount, setRatesLoadingCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setRatesCount(3)
+    setRatesLoadingCount(3)
     getRates(["USD", "JPY", "BRL"])
 }, []);
 
@@ -28,7 +28,7 @@ export function Dashboard() {
         return data;
       }));
 
-      setLoading(false)
+      setRatesLoadingCount(0)
       if(exchangeData.length > 1) {
         exchangeData.push(ratesState[0])
         setExchangeData(exchangeData);
@@ -43,9 +43,8 @@ export function Dashboard() {
 
 
   const handleSubmit = (event) => {
-    setLoading(true)
     getRates([searchedRate])
-    setRatesCount(1)
+    setRatesLoadingCount(1)
     setSearchedRate('')
     event.preventDefault()
   }
@@ -66,14 +65,13 @@ export function Dashboard() {
             </div>
         </form>
         <div className="grid gap-6 lg:grid-cols-3">
-        {
-            exchangeData.length > 0
-        ? exchangeData.map((data, index) => (
-            <FxRate key={index} fxRatesData={data} />
-          ))
-        : Array.from({ length: ratesCount }).map((_, index) => (
-            <Loader key={index} loading={loading} />
-        ))}
+           {exchangeData &&
+             exchangeData.map((data, index) => (
+               <FxRate key={index} fxRatesData={data} />
+             ))}
+           {Array.from({ length: ratesLoadingCount }).map((_, index) => (
+             <Loader key={index} />
+           ))}
         </div>
       </div>
     </div>
