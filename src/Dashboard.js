@@ -20,7 +20,6 @@ export function Dashboard() {
 }, []);
 
   const getRates = (rates) => {
-    console.log("getRates")
     const fetchInitialRatesAndProcess = async (rates) => {
       const startTime = dayjs().subtract(1, "month").toDate().toISOString().split('T')[0];
 
@@ -29,10 +28,10 @@ export function Dashboard() {
         return data;
       }));
 
-      console.log(ratesState);
       setLoading(false)
       if(exchangeData.length > 1) {
-        setExchangeData([...exchangeData, ratesState]);
+        exchangeData.push(ratesState[0])
+        setExchangeData(exchangeData);
       } else {
         setExchangeData(ratesState)
       }
@@ -68,7 +67,7 @@ export function Dashboard() {
         </form>
         <div className="grid gap-6 lg:grid-cols-3">
         {
-            exchangeData.length > 0 
+            exchangeData.length > 0
         ? exchangeData.map((data, index) => (
             <FxRate key={index} fxRatesData={data} />
           ))
