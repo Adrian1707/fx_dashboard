@@ -17,9 +17,9 @@ export function FxRate({fxRatesData}) {
     return `${fxData.base_currency}/${fxData.quote_currency}`
   }
 
-  const timeChange = async (num, timeType, foo) => {
+  const timeChange = async (num, timeType) => {
     const startTime = dayjs().subtract(num, timeType).toDate().toISOString().split('T')[0]
-    const newData = await fetchData(formatCurrencyPair().replace("/", ""), startTime, foo)
+    const newData = await fetchData(formatCurrencyPair().replace("/", ""), startTime)
     setFxData(newData)
     const updatedRates = collectRates(newData);
     setRates(updatedRates)
@@ -38,9 +38,9 @@ export function FxRate({fxRatesData}) {
       {rates.length > 0 && <Chart data={rates} /> }
       <div className="ml-14 pl-14 w-80 h-6 space-x-12">
         <span className="cursor-pointer" onClick={() => timeChange(1, 'day')}>1d</span>
-        <span className="cursor-pointer" onClick={() => timeChange(5, 'day', "week")}>5d</span>
-        <span className="cursor-pointer" onClick={() => timeChange(1, 'month', "month")}>1m</span>
-        <span className="cursor-pointer" onClick={() => timeChange(1, 'year', "year")}>1y</span>
+        <span className="cursor-pointer" onClick={() => timeChange(5, 'day')}>5d</span>
+        <span className="cursor-pointer" onClick={() => timeChange(1, 'month')}>1m</span>
+        <span className="cursor-pointer" onClick={() => timeChange(1, 'year')}>1y</span>
         <span className="cursor-pointer" onClick={() => timeChange(5, 'year')}>5y</span>
       </div>
     </div>

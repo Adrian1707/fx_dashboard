@@ -12,7 +12,6 @@ export function Dashboard() {
   const [exchangeData, setExchangeData] = useState([]);
   const [searchedRate, setSearchedRate] = useState('')
   const [ratesLoadingCount, setRatesLoadingCount] = useState(0)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setRatesLoadingCount(3)
