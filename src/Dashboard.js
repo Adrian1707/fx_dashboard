@@ -11,12 +11,16 @@ dotenv.config();
 export function Dashboard() {
   const [exchangeData, setExchangeData] = useState([]);
   const [searchedRate, setSearchedRate] = useState('')
+  const [ratesCount, setRatesCount] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getInitialRates(["USD", "JPY", "BRL"])
+    setRatesCount(3)
+    getRates(["USD", "JPY", "BRL"])
 }, []);
 
-  const getInitialRates = (rates) => {
+  const getRates = (rates) => {
+    console.log("getRates")
     const fetchInitialRatesAndProcess = async (rates) => {
       const startTime = dayjs().subtract(1, "month").toDate().toISOString().split('T')[0];
 
@@ -26,26 +30,23 @@ export function Dashboard() {
       }));
 
       console.log(ratesState);
-      setExchangeData([...ratesState]);
+      setLoading(false)
+      if(exchangeData.length > 1) {
+        setExchangeData([...exchangeData, ratesState]);
+      } else {
+        setExchangeData(ratesState)
+      }
+
     }
 
     fetchInitialRatesAndProcess(rates);
   }
 
-  const fetchFxData = (rate) => {
-    const fetchDataAndProcess = async (rate) => {
-      const startTime = dayjs().subtract('1', "month").toDate().toISOString().split('T')[0]
-      const data = await fetchData(`GBP${rate}`, startTime, undefined);
-      if (data) {
-        setExchangeData([...exchangeData, data]);
-      }
-    };
-
-    fetchDataAndProcess(rate);
-  }
 
   const handleSubmit = (event) => {
-    fetchFxData(searchedRate)
+    setLoading(true)
+    getRates([searchedRate])
+    setRatesCount(1)
     setSearchedRate('')
     event.preventDefault()
   }
@@ -66,14 +67,14 @@ export function Dashboard() {
             </div>
         </form>
         <div className="grid gap-6 lg:grid-cols-3">
-        <Loader />
-        <Loader />
-        <Loader />
-        {exchangeData && exchangeData.map((data, index) => (
-          <FxRate key={index} fxRatesData={data} />
-          )
-          )
-        }
+        {
+            exchangeData.length > 0 
+        ? exchangeData.map((data, index) => (
+            <FxRate key={index} fxRatesData={data} />
+          ))
+        : Array.from({ length: ratesCount }).map((_, index) => (
+            <Loader key={index} loading={loading} />
+        ))}
         </div>
       </div>
     </div>
