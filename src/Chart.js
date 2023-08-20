@@ -17,7 +17,7 @@ export default function Chart({ data }) {
       return { min: null, max: null };
     }
 
-    const closeValues = data.map(item => item.rate);
+    const closeValues = data.filter(item => item.rate !== null).map(item => item.rate);
     const min = parseFloat((Math.min(...closeValues) * 0.99).toFixed(2))
     const max = parseFloat((Math.max(...closeValues) * 1.01).toFixed(2))
     if(min < 10) {
