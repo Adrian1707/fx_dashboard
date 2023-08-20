@@ -36,3 +36,18 @@ export const fetchData = async (currencyPair, startDate) => {
     return null;
   }
 };
+
+export const getRates = (rates, updateExchangeData) => {
+  const fetchInitialRatesAndProcess = async (rates) => {
+    const startTime = dayjs().subtract(1, "month").toDate().toISOString().split('T')[0];
+
+    const ratesState = await Promise.all(rates.map(async (rate) => {
+      const data = await fetchData(`GBP${rate}`, startTime, undefined);
+      return data;
+    }));
+
+    updateExchangeData(ratesState)
+  }
+
+  fetchInitialRatesAndProcess(rates);
+}
