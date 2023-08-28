@@ -1,15 +1,20 @@
 import * as React from 'react';
 const { useState, useEffect } = React;
+import { useCountries } from 'use-react-countries'
 import Select from 'react-select'
 import dayjs from 'dayjs';
 
 export function Search({onSubmit}) {
   const [searchedRate, setSearchedRate] = useState('');
-  const fxOptions = [
-    { value: 'THB', label: 'THB' },
-    { value: 'MXN', label: 'MXN' },
-    { value: 'PHP', label: 'PHP' }
-  ]
+  const { countries } = useCountries()
+
+  const fxOptions = () => {
+    console.log(countries)
+    return countries.map((country) => ({
+      value: 'THB',
+      label: `${country.emoji} ${country.name}`
+    }));
+  };
 
   const handleInput = (event) => {
     setSearchedRate(event.target.value.toUpperCase());
@@ -32,7 +37,7 @@ export function Search({onSubmit}) {
     <div className="relative w-full mb-10 ml-14 pl-4">
       <Select
         name="fxRates"
-        options={fxOptions}
+        options={fxOptions()}
         value={searchedRate}
         className="basic-multi-select"
         classNamePrefix="select"
