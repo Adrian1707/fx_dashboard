@@ -1,31 +1,39 @@
 import * as React from 'react';
 const { useState, useEffect } = React;
-import { useCountries } from 'use-react-countries'
+import countries from "@doubco/countries";
 import Select from 'react-select'
 import dayjs from 'dayjs';
 
 export function Search({onSubmit}) {
-  const [searchedRate, setSearchedRate] = useState('');
-  const { countries } = useCountries()
-
-  const fxOptions = () => {
-    console.log(countries)
-    return countries.map((country) => ({
-      value: 'THB',
-      label: `${country.emoji} ${country.name}`
+  const getFxOptions = () => {
+    return Object.values(countries.data).map((country) => ({
+      value: country.currency,
+      name: country.name,
+      label: `${country.flag} ${country.name}`
     }));
   };
 
+  const [searchedRate, setSearchedRate] = useState('');
+  const [fxOptions, setFxOptions] = useState(getFxOptions())
+
+  const filterCountriesByName = (searchString) =>
+    fxOptions.filter(({ name }) => name.toLowerCase().includes(searchString.toLowerCase())
+  );
+
   const handleInput = (event) => {
+    let input = event.target.value
+    input = input.charAt(0).toUpperCase() + input.slice(1).toLowerCase()
+    setFxOptions(filterCountriesByName(input))
     setSearchedRate(event.target.value.toUpperCase());
   };
 
   const handleSubmit = (event) => {
     if(event.key === 'Enter' && searchedRate != ''){
       event.preventDefault();
-      onSubmit(searchedRate);
+      onSubmit(fxOptions[0].value);
     }
     setSearchedRate('');
+    setFxOptions(getFxOptions())
   }
 
   const handleClick = (event) => {
@@ -37,7 +45,7 @@ export function Search({onSubmit}) {
     <div className="relative w-full mb-10 ml-14 pl-4">
       <Select
         name="fxRates"
-        options={fxOptions()}
+        options={fxOptions}
         value={searchedRate}
         className="basic-multi-select"
         classNamePrefix="select"

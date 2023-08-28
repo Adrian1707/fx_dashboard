@@ -14,7 +14,6 @@ export function FxRate({fxRatesData}) {
   }, [])
 
   const formatCurrencyPair = () => {
-    console.log(fxData)
     return `${fxData.base_currency}/${fxData.quote_currency}`
   }
 
