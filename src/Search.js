@@ -23,6 +23,10 @@ export function Search({onSubmit}) {
     setSearchedRate('');
   }
 
+  const handleClick = (event) => {
+    onSubmit(event.value);
+  }
+
   return (
     <form onChange={handleInput} className="flex items-center">
     <div className="relative w-full mb-10 ml-14 pl-4">
@@ -33,6 +37,7 @@ export function Search({onSubmit}) {
         className="basic-multi-select"
         classNamePrefix="select"
         isClearable={true}
+        onChange={handleClick}
         onKeyDown={handleSubmit}
         placeholder="Enter currency"
       />
