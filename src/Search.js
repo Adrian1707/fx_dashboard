@@ -17,7 +17,6 @@ export function Search({onSubmit}) {
      .filter(country => country.currency !== 'USD' || country.name === 'United States')
      .filter(country => country.currency !== 'CHF' || country.name === 'Switzerland')
 
-     console.log(supportedCurrencies)
      const keyValueArray = Object.entries(supportedCurrencies);
 
      keyValueArray.sort((a, b) => a[1].localeCompare(b[1]));
