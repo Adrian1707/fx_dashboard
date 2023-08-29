@@ -1,16 +1,38 @@
 import * as React from 'react';
 const { useState, useEffect } = React;
 import countries from "@doubco/countries";
+import supportedCurrencies  from './supported_currencies.json'
 import Select from 'react-select'
 import dayjs from 'dayjs';
 
 export function Search({onSubmit}) {
+  const getFlagEmoji = () => 'EU'.toUpperCase().replace(/./g,
+    char => String.fromCodePoint(127397 + char.charCodeAt())
+  );
+
   const getFxOptions = () => {
-    return Object.values(countries.data).map((country) => ({
-      value: country.currency,
-      name: country.name,
-      label: `${country.flag} ${country.name}`
-    }));
+     let list = Object.values(countries.data)
+     list = list
+     .filter(country => country.currency !== 'GBP' || country.name === 'United Kingdom')
+     .filter(country => country.currency !== 'USD' || country.name === 'United States')
+     .filter(country => country.currency !== 'CHF' || country.name === 'Switzerland')
+
+     console.log(list)
+     return Object.entries(supportedCurrencies).map((entry) => {
+      let currency = entry[0];
+
+      let flag;
+      if(currency == "EUR") {
+        flag = getFlagEmoji()
+      } else {
+        flag = list.find(item =>  item.currency === currency ).flag
+      }
+
+      return {
+        value: currency,
+        label: `${flag} ${entry[1]}`,
+      };
+    });
   };
 
   const [searchedRate, setSearchedRate] = useState('');
@@ -38,6 +60,7 @@ export function Search({onSubmit}) {
 
   const handleClick = (event) => {
     onSubmit(event.value);
+    setFxOptions(getFxOptions())
   }
 
   return (
