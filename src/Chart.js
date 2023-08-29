@@ -27,9 +27,29 @@ export default function Chart({ data }) {
     }
   }
 
+  const setLineColour = () => {
+    const startValue = data[0].rate
+    const endValue = data[data.length - 1].rate
+    if(startValue >= endValue) {
+      return 'red'
+    } else {
+      return 'green'
+    }
+  }
+
+  const setTitleColour = () => {
+    const startValue = data[0].rate
+    const endValue = data[data.length - 1].rate
+    if(startValue >= endValue) {
+      return 'text-red-600'
+    } else {
+      return 'text-green-600'
+    }
+  }
+
   return (
     <div>
-      <h1 className="text-xl font-bold text-center text-green-600">{data[0].name}</h1>
+      <h1 className={`text-xl font-bold text-center ${setTitleColour()}`}>{data[0].name}</h1>
       <ResponsiveContainer width="100%" height={400}>
         <LineChart
           data={data}
@@ -44,7 +64,7 @@ export default function Chart({ data }) {
           <YAxis domain={setAxisRange} />
           <Tooltip />
           <Legend />
-          <Line type="monotone" stroke="blue" dataKey="rate" dot={false} />
+          <Line type="monotone" stroke={setLineColour()} dataKey="rate" dot={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>
