@@ -39,7 +39,7 @@ export const fetchData = async (currencyPair, startDate) => {
 
 export const getRates = (rates, updateExchangeData) => {
   const fetchInitialRatesAndProcess = async (rates) => {
-    const startTime = dayjs().subtract(1, "month").toDate().toISOString().split('T')[0];
+    const startTime = dayjs().subtract(1, "year").toDate().toISOString().split('T')[0];
 
     const ratesState = await Promise.all(rates.map(async (rate) => {
       const data = await fetchData(`GBP${rate}`, startTime, undefined);
