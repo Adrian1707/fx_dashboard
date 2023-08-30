@@ -17,8 +17,8 @@ export function FxRatesContainer({exchangeData, ratesLoadingCount}) {
 
   return (
     <GridContextProvider onChange={onChange}>
-      <div className="container-foo">
-        <GridDropZone className={`dropzone`} boxesPerRow={3} rowHeight={600}>
+      <div className="rates-container">
+        <GridDropZone className='dropzone' boxesPerRow={3} rowHeight={600}>
         {exchangeData &&
           exchangeData.map((data, index) => (
             <GridItem key={data.quote_currency}>
