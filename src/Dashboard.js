@@ -34,8 +34,8 @@ export function Dashboard() {
   };
 
   return(
-    <div>
-      <div>
+    <div className="w-full">
+      <div className="w-full">
         <Search onSubmit={handleSearchSubmit} />
         <FxRatesContainer exchangeData={exchangeData} ratesLoadingCount={ratesLoadingCount} />
       </div>

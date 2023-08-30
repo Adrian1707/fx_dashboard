@@ -34,7 +34,7 @@ export function FxRate({fxRatesData}) {
   const [rates, setRates] = useState([])
 
   return(
-    <div className='zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat'>
+    <div className='w-full zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat'>
       {rates.length > 0 && <Chart data={rates} /> }
       <div className="ml-14 pl-28 space-x-24 w-80 h-6 space-x-12">
         <span className="cursor-pointer" onClick={() => timeChange(5, 'day')}>5d</span>
