@@ -2,22 +2,11 @@ import * as React from "react";
 const { useState, useEffect } = React;
 import { WorldMap } from "react-svg-worldmap";
 import { CountryContext, Data } from "react-svg-worldmap";
+import supportedCurrencies  from './supported_currencies.json'
 
 
 export function Map({ exchangeData }) {
   const [mapData, setMapData] = useState([]);
-  const data = [
-    { country: "cn", value: 1389618778 }, // china
-    { country: "in", value: 1311559204 }, // india
-    { country: "us", value: 331883986 }, // united states
-    { country: "id", value: 264935824 }, // indonesia
-    { country: "pk", value: 210797836 }, // pakistan
-    { country: "br", value: 210301591 }, // brazil
-    { country: "ng", value: 208679114 }, // nigeria
-    { country: "bd", value: 161062905 }, // bangladesh
-    { country: "ru", value: 141944641 }, // russia
-    { country: "mx", value: 127318112 }, // mexico
-  ];
 
   const stylingFunction = (data) => {
     let countryCode = data.countryCode.toLowerCase()
@@ -42,19 +31,24 @@ export function Map({ exchangeData }) {
     };
   };
 
-  const mapping = {
-    'USD': 'us',
-    'BRL': 'br',
-    'JPY': 'jp',
-    'MXN': 'mx',
-    'COP': 'co',
-    "PEN": 'pe',
-    'ZAR': 'za'
-  }
+  let mapping = {}
 
   useEffect(() => {
+    buildMapping()
     buildData()
   }, []);
+
+  const buildMapping = () => {
+    // ['fr', 'de', 'es', 'pt', 'it', 'ie', 'se', 'lv', 'lt', 'ee', 'be', 'gr', 'nl'].map((code) => {
+    //   mapping['EUR'] = code
+    // })
+    // mapping['EUR'] = ['fr', 'de', 'es', 'pt', 'it', 'ie', 'se', 'lv', 'lt', 'ee', 'be', 'gr', 'nl']
+    mapping['EUR'] = 'eu'
+    Object.keys(supportedCurrencies).map((rate) => {
+      mapping[rate] = (rate[0] + rate[1]).toLowerCase()
+    });
+    mapping['EUR'] = 'eu'
+  }
 
   const collectRates = (data) => {
     let currencyCode = data.quote_currency;
@@ -77,16 +71,32 @@ export function Map({ exchangeData }) {
 
 
   const buildData = () => {
-    console.log(exchangeData)
+    // console.log(exchangeData)
+    let euCountries = ['fr', 'de', 'es', 'hr', 'bg', 'fi', 'sk', 'si', 'at', 'pt', 'it', 'ie', 'se', 'lv', 'lt', 'ee', 'be', 'gr', 'nl']
+    let euRates = exchangeData.find((data) => (
+      data.quote_currency == 'EUR'
+    ))
+    // console.log(euRates)
+
+    let ratesData = collectRates(euRates)
+    let startValue = ratesData[0].rate
+    let endValue = ratesData[ratesData.length - 1].rate
+    let difference = endValue / startValue
+    const euData = euCountries.map((country) => {
+      return { country: country, value: difference}
+    })
     const dataSet = exchangeData.map((data, index) => {
       let ratesData = collectRates(data)
       let startValue = ratesData[0].rate
       let endValue = ratesData[ratesData.length - 1].rate
       let difference = endValue / startValue
-      console.log(floatToPercentage(difference))
       return { country: mapping[ratesData[0].code], value: difference}
     })
-    setMapData(dataSet)
+    // console.log(euData + dataSet)
+    // let combinedData = euData.concat(dataSet)
+    let combinedData = [].concat(euData, dataSet)
+    console.log(combinedData)
+    setMapData(combinedData)
   }
 
   const setLineColour = () => {

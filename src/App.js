@@ -3,13 +3,15 @@ const { useState, useEffect } = React;
 import { Dashboard } from "./Dashboard";
 import { Map } from "./Map";
 import { fetchData, getRates } from "./FxData"
+import supportedCurrencies  from './supported_currencies.json'
 
 export function App() {
   const [page, setPage] = useState('charts')
   const [exchangeData, setExchangeData] = useState([]);
 
   useEffect(() => {
-    const rates = ["USD", "JPY", "BRL", "MXN", "COP", 'PEN', 'ZAR']
+    const rates = Object.keys(supportedCurrencies)
+    console.log(rates)
     getRates(rates, updateExchangeData)
 }, []);
 
