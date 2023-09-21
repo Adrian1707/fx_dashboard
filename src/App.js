@@ -6,6 +6,21 @@ import { fetchData, getRates } from "./FxData"
 
 export function App() {
   const [page, setPage] = useState('charts')
+  const [exchangeData, setExchangeData] = useState([]);
+
+  useEffect(() => {
+    const rates = ["USD", "JPY", "BRL", "MXN", "COP", 'PEN', 'ZAR']
+    getRates(rates, updateExchangeData)
+}, []);
+
+  const updateExchangeData = (ratesState) => {
+    if(exchangeData.length > 1) {
+      exchangeData.push(ratesState[0])
+      setExchangeData(exchangeData);
+    } else {
+      setExchangeData(ratesState)
+    }
+  }
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -28,7 +43,7 @@ export function App() {
           FX Dashboard
         </h1>
         {page === 'charts' ? <Dashboard /> : null}
-        {page === 'map' ? <Map /> : null}
+        {page === 'map' ? <Map exchangeData={exchangeData} /> : null}
       </div>
     </div>
   )
