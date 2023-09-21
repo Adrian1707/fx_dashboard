@@ -23,12 +23,16 @@ export function FxRatesContainer({exchangeData, ratesLoadingCount}) {
           exchangeData.map((data, index) => (
             <GridItem key={data.quote_currency}>
               <div className="grid-item">
-                <FxRate key={index} fxRatesData={data} />
+                <FxRate key={index} fxRatesData={data} ratesLoadingCount={ratesLoadingCount} />
               </div>
             </GridItem>
+
           ))}
         </GridDropZone>
       </div>
+      {Array.from({ length: ratesLoadingCount }).map((_, index) => (
+        <Loader key={index} />
+      ))}
     </GridContextProvider>
   )
 }
