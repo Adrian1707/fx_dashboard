@@ -25,9 +25,10 @@ export function Map({ exchangeData }) {
     }
     return {
       fill: colour,
-      countryValue: 1,
-      suffix: 1,
-      prefix: 2,
+      stroke: "blue",
+      strokeWidth: 1,
+      strokeOpacity: 0.2,
+      cursor: "pointer",
     };
   };
 
