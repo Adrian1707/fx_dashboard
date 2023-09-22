@@ -25,6 +25,9 @@ export function Map({ exchangeData }) {
     }
     return {
       fill: colour,
+      fillOpacity: (country && country.value)
+        ? 0.1 + (2.0 * (country.value - 0.5)) / (3.6 - 0.5)
+        : 0.3,
       stroke: "blue",
       strokeWidth: 1,
       strokeOpacity: 0.2,
@@ -114,8 +117,8 @@ export function Map({ exchangeData }) {
   return (
     <div className="map">
       <WorldMap
-        value-suffix="people"
         size="xxl"
+        valueSuffix='%'
         data={mapData}
         styleFunction={stylingFunction}
       />
