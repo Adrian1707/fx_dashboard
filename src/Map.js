@@ -109,20 +109,16 @@ export function Map({ exchangeData }) {
     setMapData(combinedData)
   }
 
-  const setLineColour = () => {
-    return 'red'
-    const startValue = data[0].rate
-    const endValue = data[data.length - 1].rate
-    if(startValue >= endValue) {
-      return 'red'
-    } else {
-      return 'green'
-    }
+  const clickAction = (country) => {
+    console.log(country)
+    console.log("CLICKED")
   }
+
 
   return (
     <div className="map">
       <WorldMap
+        onClickFunction={clickAction}
         backgroundColor='aliceblue'
         size="xxl"
         valueSuffix='%'
