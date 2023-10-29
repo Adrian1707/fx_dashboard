@@ -29,7 +29,7 @@ export function App() {
   };
 
   return(
-    <div>
+    <div className="page">
       <div className="nav">
         <ul className="flex">
         <li className="mr-6">

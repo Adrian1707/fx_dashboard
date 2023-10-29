@@ -123,6 +123,7 @@ export function Map({ exchangeData }) {
   return (
     <div className="map">
       <WorldMap
+        backgroundColor='aliceblue'
         size="xxl"
         valueSuffix='%'
         data={mapData}
