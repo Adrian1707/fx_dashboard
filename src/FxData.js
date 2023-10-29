@@ -11,7 +11,8 @@ const TIME_SERIES_URL = "https://marketdata.tradermade.com/api/v1/timeseries"
 export const fetchData = async (currencyPair, startDate) => {
   try {
     const endDate = dayjs().toDate().toISOString().split('T')[0]
-    const url = `${TIME_SERIES_URL}?currency=${currencyPair}&api_key=${FX_API_KEY}&start_date=${startDate}&end_date=${endDate}&format=records`
+    const url = `${TIME_SERIES_URL}?currency=${currencyPair}&api_key=${FX_API_KEY}&start_date=2022-10-29&end_date=2023-10-29&format=records`
+    // const url = `${TIME_SERIES_URL}?currency=${currencyPair}&api_key=${FX_API_KEY}&start_date=${startDate}&end_date=${endDate}&format=records`
 
     // Check if data exists in cache
     const cachedData = localStorage.getItem(url);

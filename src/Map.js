@@ -55,6 +55,10 @@ export function Map({ exchangeData }) {
   }
 
   const collectRates = (data) => {
+    console.log(data)
+    if(data == null) {
+      return []
+    }
     let currencyCode = data.quote_currency;
     return data.quotes.map((rate, idx) => ({ code: currencyCode, rate: rate.close, day: idx}))
   }
@@ -83,6 +87,8 @@ export function Map({ exchangeData }) {
     // console.log(euRates)
 
     let ratesData = collectRates(euRates)
+    console.log("RATES DATA")
+    console.log(ratesData)
     let startValue = ratesData[0].rate
     let endValue = ratesData[ratesData.length - 1].rate
     let difference = endValue / startValue
